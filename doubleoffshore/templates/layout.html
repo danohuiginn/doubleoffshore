@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="doubleoffshore">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block page_title %}{% endblock %} - Double Offshore</title>
+    <meta name="author" content="African Network of Centers for Investigative Reporting" />
+    
+    {% assets filters="less,cssmin,cssrewrite", output="assets/style.css",
+        "style/style.less",
+        "vendor/chosen/chosen.css" %}
+      <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Kreon:300,400|Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="/static/img/favicon.png">
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+
+    {% include '_footer.html' %}
+
+    <script>
+        var DoubleOffshore = DoubleOffshore || {};
+        DoubleOffshore.slug = "{{country_slug}}";
+    </script>
+
+    {% assets filters="uglifyjs", output="assets/jqangular.js",
+        "vendor/jquery/dist/jquery.js",
+        "vendor/chosen/chosen.jquery.min.js",
+        "vendor/bootstrap/dist/js/bootstrap.js",
+        "vendor/angular/angular.js",
+        "vendor/angular-bootstrap/ui-bootstrap-tpls.js",
+        "vendor/angular-chosen-localytics/chosen.js"
+        %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% assets filters="uglifyjs", output="assets/d3app.js",
+        "vendor/d3/d3.js",
+        "vendor/d3-geo-projection/index.js",
+        "vendor/topojson/topojson.js",
+        "vendor/webcola/WebCola/cola.v3.min.js",
+        "vendor/d3-plugins/sankey/sankey.js",
+        "vendor/crossfilter/crossfilter.js",
+        "js/app.js" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% for path, tmpl in g.templates %}
+      <script id="{{path}}" type="text/ng-template">{{ tmpl | safe }}</script>
+    {% endfor %}
+
+  </body>
+</html>
